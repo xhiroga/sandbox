@@ -1,0 +1,334 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main()
+{
+	srand( (unsigned)time( NULL ) );
+	printf("6ニムト\n");
+	int setsumei;
+	do{
+		printf("ルールの説明を始めます\n");
+		printf("このゲーム「６ニムト」は、実際に海外の会社がカードゲームとして販売しているものです\n");
+		printf("したがって小笠原はプログラムを書くだけのことしかしていません。期待させてごめんね！\n\n");
+		printf("このゲームでは初めに手札が１０枚と、４つの場が用意されます\n");
+		printf("あなたとＣＰＵは１ターンに一枚づつ手札からカードを出します\n");
+		printf("その時、出したカードを場のカードの中で「最も近くてそれより大きいカード」の後ろに置きます\n");
+		printf("もしどこにも置けない場合、あなたは好きな列のカードをすべて引き取らなければいけません\n");
+		printf("引き取ったカードはそのゲーム中は使わずに、引き取った枚数をあなたの得点から減点します\n");
+		printf("また、もしあなたが置いたカードがその列の６枚目だった場合、６ニムトとなり前の５枚を引き取らなくてはいけません\n");
+		printf("その場合は５枚引き取るのであなたの得点から５点減点となります\n");
+		printf("この流れを手札がなくなるまで１０ターン繰り返し、最終的に減点の少なかった方が勝ちとなります\n");
+		printf("以上の説明でよければ数字の1を半角で入力してください。これ以降数字を入力するときも半角でお願いします\n");
+		scanf("%d",&setsumei);
+	}while(setsumei!=1);
+	int i,j,k,l;/*カウンタ*/
+	int n,m;/*入力*/
+/*ゲーム準備*/
+	/*デッキシャッフルの操作*/
+	int deck[104];
+	for(i=0;i<104;i++){
+		deck[i]=rand()%104+1;
+		for(j=0;j<i;j++){
+		    if(deck[i]==deck[i-j-1]){
+			i-=1;
+			j+=i;
+			}
+		}
+	}
+	/*デッキ表示*/
+	/*for(k=0;k<104;k++){
+	    printf("%3d,",deck[k]);
+	}
+	printf("\n\n");
+	*/
+    /*手札と場の決定*/
+	int myhand[10];/*自分の手札*/
+	int cpuhand[10];/*CPUの手札*/
+	int field[4][6];/*場*/
+	int fmax[4];/*場の一番右側の値*/
+	int flength[7];/*場の枚数(長さ)*/
+	int tmp;/*ソート用一時格納庫*/
+	/*デッキの上から10枚,10枚,4枚を小さい順にソート*/
+	for(i=0;i<23;i++){
+		if(i<9){
+		    for(j=i+1;j<10;j++){
+			    if(deck[i]>deck[j]){
+				    tmp=deck[i];
+				    deck[i]=deck[j];
+				    deck[j]=tmp;
+			    }
+		    }
+		}/*9を含まないがfor止まらないよな？,この＆＆使わない書き方合ってるのかな？*/
+		if((i>9)&&(i<19)){
+			for(j=i+1;j<20;j++){
+			    if(deck[i]>deck[j]){
+				    tmp=deck[i];
+				    deck[i]=deck[j];
+				    deck[j]=tmp;
+			    }
+		    }
+		
+		}
+		if((i>19)&&(i<23)){
+			for(j=i+1;j<24;j++){
+                if(deck[i]>deck[j]){
+				    tmp=deck[i];
+				    deck[i]=deck[j];
+				    deck[j]=tmp;
+				}
+			}
+		}
+	}
+	/*自分の手札の決定*/
+	printf("あなたの手札/myhand\n");
+	for(k=0;k<10;k++){
+		myhand[k]=deck[k];
+		printf("|%3d",myhand[k]);
+	}
+	printf("|\n\n");
+	/*CPUの手札の決定(上の処理のkを流用)*/
+	printf("ＣＰＵの手札/cpuhand\n");
+    for(k;k<20;k++){
+		cpuhand[k-10]=deck[k];
+	    printf("|***");
+		/*printf("|%3d",cpuhand[k-10]);*/
+	}
+	printf("|\n\n");
+	/*場の決定()*/
+	printf("場/field\n");
+    for(k;k<24;k++){
+	    field[k-20][0]=deck[k];
+	    for(l=1;l<6;l++){field[k-20][l]=0;}
+		fmax[k-20]=field[k-20][0];
+		flength[k-20]=1;
+	    printf("%3d\n",field[k-20][0]);
+	}
+
+/*ゲーム開始*/
+	int mycard,cpucard;
+    int mypoint,cpupoint;
+	int turn;
+	mypoint=0;
+	cpupoint=0;
+
+for(turn=0;turn<10;turn++){
+
+	printf("%dターン目のゲームを始めます\n",turn+1);
+	/*カードの選択*/
+	n=1;
+	do {
+		if((n<1)||(n>10-turn)){printf("入力された数値が不正です\n");}
+        printf("左から何番目のカードを出しますか？1～%dまでの数値で指定してください\n",10-turn);
+		scanf("%d",&n);/*入力代数n使用*/
+	}while((n<1)||(n>10-turn));
+	printf("左から%d番目のカードを出します\n",n);
+	mycard=myhand[n-1];
+	myhand[n-1]=0;/*この時点で出したカードを消去*/
+	/*CPUのカード選択*/
+	cpucard=cpuhand[0];
+	cpuhand[0]=0;
+	/*カードの出し合い*/
+	printf("あなたの出したカード=%d,ＣＰＵの出したカード=%d\n\n",mycard,cpucard);
+	if(mycard<cpucard){
+		/*自分の処理*/
+	    i=0;
+		while((mycard>fmax[i])&&(i<4)){i++;}/*iはここではカードを置くべき行+1*/
+		i--;
+		if(i<0){
+			printf("あなたのカード|%3d|を置ける場がありません。\n",mycard);
+		    do{
+			    printf("上から何行目を引き取りますか？1～4の値を入力してください。\n");
+			    scanf("%d",&m);/*入力代数m使用*/
+			}while((m<0)||(m>4));
+			for(k=0;k<m-1;k++){
+				for(l=0;l<6;l++){field[m-1-k][l]=field[m-k-2][l];}
+			}
+			mypoint+=flength[m-1];
+			printf("あなたのポイント-%d\n",flength[m-1]);
+			field[0][0]=mycard;
+			fmax[0]=field[0][0];
+			flength[0]=1;
+			for(l=1;l<6;l++){field[0][l]=0;}
+		}
+		else{
+			field[i][flength[i]]=mycard;
+			fmax[i]=field[i][flength[i]];
+            flength[i]++;
+		    if(flength[i]>5){
+			    printf("６ニムト!!\n");
+			    printf("あなたのポイント-5\n");
+				mypoint+=5;
+				field[i][0]=mycard;
+				fmax[i]=field[i][0];
+				flength[i]=1;
+				for(l=1;l<6;l++){field[i][l]=0;}
+			}
+		}
+	/*場の表示*/
+	printf("場/field\n");
+	for(k=0;k<4;k++){
+		for(l=0;l<5;l++){/*表示なのでlength4まででおｋ*/
+			if(field[k][l]!=0){printf("%3d,",field[k][l]);}
+		}
+		printf("\n");
+	}
+	printf("\n");
+		/*CPUの処理*/
+	    j=0;
+		while((cpucard>fmax[j])&&(j<4)){j++;}/*jはここではカードを置くべき行+1*/
+		j--;
+	    if(j<0){
+			printf("ＣＰＵ｛カードを置ける場所がありません。\n");
+		    printf("ＣＰＵ｛上から1行目を引き取ります。\n");
+			cpupoint+=flength[0];
+			printf("ＣＰＵのポイント-%d\n",flength[0]);
+			field[0][0]=cpucard;
+			fmax[0]=field[0][0];
+			flength[0]=1;
+			for(l=1;l<6;l++){field[0][l]=0;}
+		}
+		else{
+			field[j][flength[j]]=cpucard;
+			fmax[j]=field[j][flength[j]];
+			flength[j]++;
+            if(flength[j]>5){
+			    printf("６ニムト!!\n");
+				cpupoint+=5;
+			    printf("ＣＰＵのポイント-5\n");
+				field[j][0]=cpucard;
+				fmax[j]=field[j][0];
+				flength[j]=1;
+				for(l=1;l<6;l++){field[j][l]=0;}
+			}
+	    }
+	}
+	/*クラス化ができれば便利なんだけどなぁー*/
+	/*CPUの処理*/
+	else{
+	    j=0;
+		while((cpucard>fmax[j])&&(j<4)){j++;}/*jはここではカードを置くべき行+1*/
+		j--;
+		if(j<0){
+			printf("ＣＰＵ｛カードを置ける場がありません。\n");
+			printf("ＣＰＵ｛上から1行目を引き取ります。\n");
+			cpupoint+=flength[0];
+			printf("ＣＰＵのポイント-%d\n",flength[0]);
+			field[0][0]=cpucard;
+			fmax[0]=field[0][0];
+			flength[0]=1;
+			for(l=1;l<6;l++){field[0][l]=0;}
+		}
+		else{
+			field[j][flength[j]]=cpucard;
+			fmax[j]=field[j][flength[j]];
+			flength[j]++;
+            if(flength[j]>5){
+				printf("６ニムト!!\n");
+				cpupoint+=5;
+				printf("ＣＰＵのポイント-5\n");
+				field[j][0]=cpucard;
+				fmax[j]=field[j][0];
+				flength[j]=1;
+				for(l=1;l<6;l++){field[j][l]=0;}
+			}
+		}
+	/*場の表示*/
+	printf("場/field\n");
+	for(k=0;k<4;k++){
+		for(l=0;l<5;l++){/*表示なのでlength4まででおｋ*/
+			if(field[k][l]!=0){printf("%3d,",field[k][l]);}
+		}
+		printf("\n");
+	}
+	printf("\n");
+	/*自分の処理*/
+	    i=0;
+		while((mycard>fmax[i])&&(i<4)){i++;}/*iはここではカードを置くべき行+1*/
+		i--;
+		if(i<0){
+			printf("あなたのカード|%3d|を置ける場がありません。\n",mycard);
+			do{
+				printf("上から何行目を引き取りますか？1～4の値を入力してください。\n");
+				scanf("%d",&m);/*入力代数m使用*/
+			}while((m<0)||(m>4));
+			for(k=0;k<m-1;k++){
+				for(l=0;l<6;l++){field[m-1-k][l]=field[m-k-2][l];}
+			}
+			mypoint+=flength[m-1];
+			printf("あなたのポイント-%d\n",flength[m-1]);
+			field[0][0]=mycard;
+			fmax[0]=field[0][0];
+			flength[0]=1;
+			for(l=1;l<6;l++){field[0][l]=0;}
+		}
+		else{
+			field[i][flength[i]]=mycard;
+			fmax[i]=field[i][flength[i]];
+			flength[i]++;
+			if(flength[i]>5){
+				printf("６ニムト!!\n");
+				printf("あなたのポイント-5\n");
+				mypoint+=5;
+				field[i][0]=mycard;
+				fmax[i]=field[i][0];
+				flength[i]=1;
+				for(l=1;l<6;l++){field[i][l]=0;}
+			}
+		}
+	}
+	mycard=0;/*スリム化の為に出したカードの清算はここで*/
+	cpucard=0;
+
+/*ターン終了*/
+	/*場の表示*/
+	printf("場/field\n");
+	for(k=0;k<4;k++){
+		for(l=0;l<5;l++){/*表示なのでlength4まででおｋ*/
+			if(field[k][l]!=0){printf("%3d,",field[k][l]);}
+		}
+		printf("\n");
+	}
+	printf("\n");
+	printf("%dターン目のゲームを終了します\n\n",turn+1);
+	/*自分の手札の清算*/
+	for(i=n;i<10-turn;i++){myhand[i-1]=myhand[i];}
+	myhand[10-turn-1]=0;
+	/*自分の手札の表示*/
+	printf("あなたの手札/myhand\n");
+	for(i=0;i<10-turn-1;i++){
+		if(myhand[i]!=0){printf("|%3d",myhand[i]);}
+		}
+	printf("|\n");
+	/*CPUの手札の清算(AIのない場合に限り有効な式)*/
+	for(j=0;j<10-turn-1;j++){cpuhand[j]=cpuhand[j+1];}
+	cpuhand[10-turn-1]=0;
+	/*CPUの手札の表示()*/
+	printf("ＣＰＵの手札/cpuhand\n");
+    for(j=0;j<10-turn-1;j++){
+	    printf("|***");
+	}
+	printf("|\n");
+	/*自分の得点の表示*/
+	printf("あなたの得点=-%d\n",mypoint);
+	/*CPUの得点の表示*/
+	printf("ＣＰＵの得点=-%d\n\n",cpupoint);
+}
+
+/*ゲーム終了*/
+    if(cpupoint<mypoint){
+		printf("ＣＰＵ｛やはりこの程度か・・・出直してくるんだな\n");
+		printf("Ｙｏｕ　Ｌｏｓｅ・・・\n");
+	}
+	else if(cpupoint=mypoint){
+		printf("ＣＰＵ｛意外に健闘したじゃないか\n");
+		printf("Ｄｒａｗ　Ｇａｍｅ\n");
+	}
+	else{
+		printf("ＣＰＵ｛くっ・・・この私が貴様ごときに遅れを取るとはな・・・\n");
+		printf("ＣＰＵ｛たとえ私が死んでも第二第三のＣＰＵが貴様を倒しに来るだろう・・・せいぜい用心することだな\n");
+		printf("Ｙｏｕ　Ｗｉｎ！！！\n");
+	}
+	return 0;
+}
