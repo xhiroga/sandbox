@@ -37,7 +37,8 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", MainHandler),
-            (r"/webhook?", WebHookHandler)
+            (r"/webhook?", WebHookHandler),
+            (r"/csv", CSVHandler)
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
@@ -53,11 +54,10 @@ class MainHandler(tornado.web.RequestHandler):
             google_analytics_id = os.environ['GOOGLEANALYTICSID']
         else:
             google_analytics_id = False
-        testString = neo4jSelectName()
         self.render(
             "main.html",
             page_title='Heroku Funtimes',
-            page_heading='Hi! This is neo4j test, and' + testString,
+            page_heading='Hi! This is Heroku!',
             google_analytics_id=google_analytics_id,
         )
 
@@ -91,6 +91,12 @@ def sendTextMessage(sender, text): # to FacebookMessanger
     data = dg.packageData(sender, text)
     r = requests.post(url, params=params, data=json.dumps(data), headers=headers)
 
+# res CSV
+class CSVHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render(
+            "csv/SW.csv"
+        )
 
 # RAMMING SPEEEEEEED!
 def main():
