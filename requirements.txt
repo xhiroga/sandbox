@@ -1,3 +1,4 @@
 Tornado>=3
 neo4j-driver
 requests
+psycopg2
