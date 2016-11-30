@@ -24,12 +24,12 @@ def neo4jThroughPass(query):
 def returnNote(word):
     driver = envDriver()
     session = driver.session()
-    result = session.run("MATCH (sw:Software) WHERE sw.name = '" + word + "' RETURN sw.name, sw.note")
+    result = session.run("MATCH (sw:Software) WHERE sw.Name = '" + word + "' RETURN sw.Name, sw.Note")
     note = "解説がヒットしませんでした。"
     if result is not None:
         for record in result:
             print (record)
-            note = record["sw.note"]
+            note = record["sw.Note"]
     return note
 
 '''
