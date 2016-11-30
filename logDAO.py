@@ -17,16 +17,12 @@ def geneConn():
         port=url.port
     )
 
-# jsonを辞書オブジェクトに変換する。
-def checkJson():
-    return None
-
-
-# jsonを辞書オブジェクトにしてこいつを呼び出すのは別の仕事
 # 辞書オブジェクト.has_key(キー)
+def writeLog(jsonString):
+    dictString = json.loads(jsonString)
+    if dictString.has_key(""):
+        cur = conn.cursor()
 
-def writeLog():
-    cur = conn.cursor()
 
 '''
 if __name__ == "__main__":

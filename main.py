@@ -72,6 +72,7 @@ class WebHookHandler(tornado.web.RequestHandler):
         data = json.loads(self.request.body.decode())
         print ("*** received data ***")
         print (data)
+        # logDAO
         messaging_events = data["entry"][0]["messaging"]
         text = ""
         for event in messaging_events:
@@ -94,9 +95,14 @@ def sendTextMessage(sender, text): # to FacebookMessanger
 # res CSV
 class CSVHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render(
-            "csv/SW.csv"
-        )
+        path = "csv/SW.csv"
+        try:
+            with open(os.path.abspath(path), 'rb') as f:
+                data = f.read()
+                self.write(data)
+            self.finish
+        except IOError:
+            raise tornado.web.HTTPError(404, 'Invalid archive')
 
 # RAMMING SPEEEEEEED!
 def main():
