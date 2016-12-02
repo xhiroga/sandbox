@@ -24,7 +24,8 @@ def writeLog(dict):
         text = dict["entry"][0]["messaging"][0]["message"]["text"]
         time = dict["entry"][0]["messaging"][0]["timestamp"]
         conn = geneConn()
-        cur = conn.cursor("insert into (senderid, text, time) VALUES (%s, %s, %s;)",[senderid, text, time])
+        cur = conn.cursor()
+        cur.execute("insert into (senderid, text, time) VALUES (%s, %s, %s;)",[senderid, text, time])
 
 """お手本
 {
