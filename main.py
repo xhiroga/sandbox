@@ -72,7 +72,7 @@ class WebHookHandler(tornado.web.RequestHandler):
         data = json.loads(self.request.body.decode())
         print ("*** received data ***")
         # logDAO側でも値を取り出しているので非効率だが、勉強用にやっている。
-        logDAO.writeLog(date)
+        logDAO.writeLog(data)
         messaging_events = data["entry"][0]["messaging"]
         text = ""
         for event in messaging_events:
