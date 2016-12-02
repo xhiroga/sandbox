@@ -19,7 +19,7 @@ def geneConn():
 
 # 辞書オブジェクト.has_key(キー)
 def writeLog(dict):
-    if dict["entry"][0]["messaging"][0].has_key("message"):
+    if "message" in dict["entry"][0]["messaging"][0]:
         senderid = dict["entry"][0]["messaging"][0]["sender"]["id"]
         text = dict["entry"][0][messaging][0][message][text]
         time = dict["entry"][0][messaging][0][timestamp]
