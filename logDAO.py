@@ -18,10 +18,23 @@ def geneConn():
     )
 
 # 辞書オブジェクト.has_key(キー)
-def writeLog(jsonString):
-    dictString = json.loads(jsonString)
-    if dictString.has_key(""):
-        cur = conn.cursor()
+def writeLog(json):
+    dict = json.loads(json)
+    if dict["entry"][0]["messaging"][0].has_key("message"):
+        senderid = dict["entry"][0]["messaging"][0]["sender"]["id"]
+        text = dict["entry"][0][messaging][0][message][text]
+        time = dict["entry"][0][messaging][0][timestamp]
+        cur = conn.cursor("insert into (senderid, text, time) VALUES (%s, %s, %s;)",[senderid, text, time])
+
+"""お手本
+{
+    'entry':
+    [{'id': '173247779792672', 'time': 1480509916595, 'messaging':
+    [{'message': {'text': 'FreeBSD', 'seq': 1054, 'mid': 'mid.1480509916543:6a06f63681'}, 'timestamp': 1480509916543, 'recipient': {'id': '173247779792672'}, 'sender': {'id': '1071891079597615'}}]
+    }],
+    'object': 'page'
+}
+"""
 
 
 '''
