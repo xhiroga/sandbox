@@ -8,7 +8,7 @@ import urllib
 # connの確立
 def geneConn():
     urllib.parse.uses_netloc.append("postgres")
-    url = urllib.parse(os.environ["DATABASE_URL"])
+    url = urllib.parse.parse(os.environ["DATABASE_URL"])
     conn = psycopg2.connect(
         database=url.path[1:],
         user=url.username,
