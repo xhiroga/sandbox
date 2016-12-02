@@ -16,6 +16,7 @@ def geneConn():
         host=url.hostname,
         port=url.port
     )
+    return conn
 
 # 辞書オブジェクト.has_key(キー)
 def writeLog(dict):
@@ -23,6 +24,7 @@ def writeLog(dict):
         senderid = dict["entry"][0]["messaging"][0]["sender"]["id"]
         text = dict["entry"][0]["messaging"][0]["message"]["text"]
         time = dict["entry"][0]["messaging"][0]["timestamp"]
+        conn = geneConn()
         cur = conn.cursor("insert into (senderid, text, time) VALUES (%s, %s, %s;)",[senderid, text, time])
 
 """お手本
