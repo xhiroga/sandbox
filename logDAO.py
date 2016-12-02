@@ -18,7 +18,6 @@ def geneConn():
     )
     return conn
 
-# 辞書オブジェクト.has_key(キー)
 def writeLog(dict):
     if "message" in dict["entry"][0]["messaging"][0]:
         senderid = dict["entry"][0]["messaging"][0]["sender"]["id"]
