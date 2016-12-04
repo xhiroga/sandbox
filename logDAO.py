@@ -27,7 +27,8 @@ def writeLog(dict):
         cur = conn.cursor()
         cur.execute("insert into (senderid, text, time) VALUES (%s, %s, %s;)",(senderid, text, time)
 
-"""お手本
+'''
+お手本
 {
     'entry':
     [{'id': '173247779792672', 'time': 1480509916595, 'messaging':
@@ -35,8 +36,7 @@ def writeLog(dict):
     }],
     'object': 'page'
 }
-"""
-
+'''
 
 '''
 if __name__ == "__main__":
