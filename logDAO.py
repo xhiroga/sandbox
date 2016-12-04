@@ -21,7 +21,7 @@ def geneConn():
 def writeLog(sender, text, time):
     conn = geneConn()
     cur = conn.cursor()
-    cur.execute("insert into messageLog (senderid, text, time) VALUES (%s, %s, %s);",(sender, text, time))
+    cur.execute("insert into messageLog (senderid, text, time) VALUES (%s, %s, %s);",(sender, text, datetime.fromtimestamp(time)))
 
 '''
 {
