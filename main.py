@@ -76,8 +76,8 @@ class WebHookHandler(tornado.web.RequestHandler):
         text = ""
         time = ""
         for event in messaging_events:
-            sender = event["sender"]["id"]
             time = event["timestamp"]
+            sender = event["sender"]["id"]
             if ("message" in event and "text" in event["message"]):
                 text = event["message"]["text"]
             logDAO.writeLog(sender, text, time)

@@ -22,7 +22,6 @@ def geneConn():
     return conn
 
 def writeLog(sender, text, time):
-    print (datetime.fromtimestamp(time))
     conn = geneConn()
     cur = conn.cursor()
     print (time)
