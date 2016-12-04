@@ -5,6 +5,8 @@ import os
 import psycopg2
 import urllib
 
+from datetime import *
+
 # connの確立
 def geneConn():
     urllib.parse.uses_netloc.append("postgres")
