@@ -26,6 +26,7 @@ def writeLog(dict):
         conn = geneConn()
         cur = conn.cursor()
         cur.execute("insert into (senderid, text, time) VALUES (%s, %s, %s;)",(senderid, text, time)
+    return
 
 # {
 #     'entry':
