@@ -3,7 +3,7 @@
 
 import os
 import psycopg2
-import urllib
+import urllib.parse
 
 from datetime import *
 
@@ -11,6 +11,7 @@ from datetime import *
 def geneConn():
     urllib.parse.uses_netloc.append("postgres")
     url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+    print (url)
     conn = psycopg2.connect(
         database=url.path[1:],
         user=url.username,
@@ -21,9 +22,14 @@ def geneConn():
     return conn
 
 def writeLog(sender, text, time):
+    print (datetime.fromtimestamp(time))
     conn = geneConn()
     cur = conn.cursor()
     cur.execute("insert into messageLog (senderid, text, time) VALUES (%s, %s, %s);",(sender, text, datetime.fromtimestamp(time)))
+    cur.execute("select * from messageLog;")
+    conn.commit()
+    for row in cur.fetchall():
+        print (row)
 
 '''
 {
@@ -36,5 +42,6 @@ def writeLog(sender, text, time):
 '''
 '''
 if __name__ == "__main__":
-    print (returnNote("neo4j"))
+    time = 15000000000
+    writeLog(123456789012345, "this is test", time)
 '''
