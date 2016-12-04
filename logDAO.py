@@ -25,6 +25,7 @@ def writeLog(sender, text, time):
     print (datetime.fromtimestamp(time))
     conn = geneConn()
     cur = conn.cursor()
+    print (time)
     cur.execute("insert into messageLog (senderid, text, time) VALUES (%s, %s, %s);",(sender, text, datetime.fromtimestamp(time)))
     cur.execute("select * from messageLog;")
     conn.commit()
