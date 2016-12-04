@@ -11,7 +11,6 @@ from datetime import *
 def geneConn():
     urllib.parse.uses_netloc.append("postgres")
     url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-    print (url)
     conn = psycopg2.connect(
         database=url.path[1:],
         user=url.username,
@@ -42,6 +41,7 @@ def writeLog(sender, text, time):
 '''
 '''
 if __name__ == "__main__":
-    time = 15000000000
+    time = 1480832602535
+    time = time/1000
     writeLog(123456789012345, "this is test", time)
 '''
