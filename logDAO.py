@@ -27,14 +27,12 @@ def writeLog(dict):
         cur = conn.cursor()
         cur.execute("insert into (senderid, text, time) VALUES (%s, %s, %s;)",(senderid, text, time)
 
-"""
-{
-    'entry':
-    [{'id': '173247779792672', 'time': 1480509916595, 'messaging':
-    [{'message': {'text': 'FreeBSD', 'seq': 1054, 'mid': 'mid.1480509916543:6a06f63681'}, 'timestamp': 1480509916543, 'recipient': {'id': '173247779792672'}, 'sender': {'id': '1071891079597615'}}]
-    }],
-    'object': 'page'
-}
-"""
+# {
+#     'entry':
+#     [{'id': '173247779792672', 'time': 1480509916595, 'messaging':
+#     [{'message': {'text': 'FreeBSD', 'seq': 1054, 'mid': 'mid.1480509916543:6a06f63681'}, 'timestamp': 1480509916543, 'recipient': {'id': '173247779792672'}, 'sender': {'id': '1071891079597615'}}]
+#     }],
+#     'object': 'page'
+# }
 # if __name__ == "__main__":
 #     print (returnNote("neo4j"))
