@@ -71,16 +71,18 @@ class WebHookHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body.decode())
         print ("*** received data ***")
-        # logDAO側でも値を取り出しているので非効率だが、勉強用にやっている。
-        logDAO.writeLog(data)
+
         messaging_events = data["entry"][0]["messaging"]
         text = ""
+        time = ""
         for event in messaging_events:
             sender = event["sender"]["id"];
             if ("message" in event and "text" in event["message"]):
-                text = event["message"]["text"];
-                # モード判定
-                sendTextMessage(sender, text)
+                text = event["message"]["text"]
+            time = event["timestamp"]
+            logDAO.writeLog(sender, text, time)
+            # モード判定
+            sendTextMessage(sender, text)
 
 def decideMode(sender, text):
     # PostgreSQLに格納中のステータスを参照する。将来的にはRedisを参照したい。
