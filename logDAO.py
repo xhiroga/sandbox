@@ -37,7 +37,6 @@ def writeLog(dict):
     'object': 'page'
 }
 '''
-
 '''
 if __name__ == "__main__":
     print (returnNote("neo4j"))
