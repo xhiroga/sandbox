@@ -23,7 +23,8 @@ def quizHandler(data):
 
 # 正誤判定
 def judge(answer):
-    logDAO
+    # 最終問題IDを取得（当面は問題の回答そのものを格納する）
+    logDAO.
     # 出題した問題と
 
 

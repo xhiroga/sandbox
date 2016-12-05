@@ -45,6 +45,16 @@ def decideMode(sender):
     return result[0]
 
 '''
+def getLastQuiz(sender):
+    conn = geneConn()
+    cur = conn.cursor()
+    cur.execute("select quizid from QuizStat where senderid = %s;", [sender])
+    result = cur.fetchone()
+    try
+    raise StatNotExistError()
+
+'''
+'''
 # 見本
 {
     'entry':

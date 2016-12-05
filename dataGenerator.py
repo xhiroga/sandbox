@@ -36,7 +36,7 @@ def setPPTP(sender):
     if kibun == 1:  imgurl ="http://image.itmedia.co.jp/nl/articles/1609/02/kontake_160902takesyobo03.jpg"
     elif kibun == 2:  imgurl ="http://cdn2.natalie.mu/media/comic/1512/1205/extra/news_header_poptepipik-new001.jpg"
     elif kibun ==3: imgurl ="http://pbs.twimg.com/media/CVoPQ-1VAAA0btq.jpg"
-    else: url ="http://pbs.twimg.com/media/CVn6FG_UEAENuo3.jpg"
+    else: imgurl ="http://pbs.twimg.com/media/CVn6FG_UEAENuo3.jpg"
     return setImageUrl(sender,imgurl)
 
 ### C. dataを詰め込む
