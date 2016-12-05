@@ -1,5 +1,7 @@
 import send
 
+
+"""
 def quizHandler(data):
 
 # quizモードで呼ばれる
@@ -29,3 +31,4 @@ def quizHandler(data):
 # クイズモード終了
 
 # 初期化
+"""
