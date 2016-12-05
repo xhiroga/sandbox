@@ -31,7 +31,7 @@ def packageData(sender, text):
 
 ### B.
 def setPPTP(sender):
-    print("Start PTP...")
+    print("Start PPTP...")
     kibun = random.randint(1,4)
     if kibun == 1:  imgurl ="http://image.itmedia.co.jp/nl/articles/1609/02/kontake_160902takesyobo03.jpg"
     elif kibun == 2:  imgurl ="http://cdn2.natalie.mu/media/comic/1512/1205/extra/news_header_poptepipik-new001.jpg"

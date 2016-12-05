@@ -1,5 +1,6 @@
 import send
-
+import logDAO
+import seDAO
 
 """
 def quizHandler(data):
@@ -21,6 +22,9 @@ def quizHandler(data):
 
 
 # 正誤判定
+def judge(answer):
+    logDAO
+    # 出題した問題と
 
 
 #クイズ結果格納
@@ -31,4 +35,9 @@ def quizHandler(data):
 # クイズモード終了
 
 # 初期化
+
+## DBに持っているもの
+# クイズ形態
+# 最後に出題した問題
+
 """
