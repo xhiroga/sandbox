@@ -22,15 +22,13 @@ from tornado.options import define
 define("port", default=5000, help="run on the given port", type=int)
 
 import json
-import requests
-import re
-import random
 
+import send
+import quiz
 import dataGenerator as dg
 import logDAO
 
 verify_token = os.environ.get("VERIFY_TOKEN")
-token = os.environ.get("PAGE_ACCESS_TOKEN")
 
 # application settings and handle mapping info
 class Application(tornado.web.Application):
@@ -82,23 +80,11 @@ class WebHookHandler(tornado.web.RequestHandler):
                 text = event["message"]["text"]
             logDAO.writeLog(sender, text, time)
             # モード判定
-            sendTextMessage(sender, text)
-
-def decideMode(sender, text):
-    # PostgreSQLに格納中のステータスを参照する。将来的にはRedisを参照したい。
-    mode = None
-    return mode
-
-def sendTextMessage(sender, text): # to FacebookMessanger
-    print("*** sendTextMessage(sender, text) ***")
-    if len(text) <= 0:
-        return
-    url = 'https://graph.facebook.com/v2.6/me/messages'
-    headers = {'content-type': 'application/json'}
-    params = {"access_token":token}
-
-    data = dg.packageData(sender, text)
-    r = requests.post(url, params=params, data=json.dumps(data), headers=headers)
+            mode = logDAO.decideMode
+            if mode == "quiz":
+                quiz.quizHandler(data)
+            else :
+                send.sendTextMessage(sender, text)
 
 # res CSV
 class CSVHandler(tornado.web.RequestHandler):

@@ -23,14 +23,29 @@ def geneConn():
 def writeLog(sender, text, time):
     conn = geneConn()
     cur = conn.cursor()
-    print (time)
     cur.execute("insert into messageLog (senderid, text, time) VALUES (%s, %s, %s);",(sender, text, datetime.fromtimestamp(time/1000)))
-    cur.execute("select * from messageLog;")
+#    cur.execute("select * from messageLog;")
     conn.commit()
-    for row in cur.fetchall():
-        print (row)
+    conn.close()
+#    for row in cur.fetchall():
+#        print (row)
+
+# senderからmodewを返す
+def decideMode(sender):
+    conn = geneConn()
+    cur = conn.cursor()
+    cur.execute("select mode from ChatMode where senderid = %s;",[sender])
+    result = cur.fetchone()
+    print (result)
+    if (result == None):
+        cur.execute("insert into ChatMode (senderid, mode) values (%s, %s);",(sender, "init"))
+        conn.commit()
+        conn.close()
+        return "init"
+    return result[0]
 
 '''
+# 見本
 {
     'entry':
     [{'id': '173247779792672', 'time': 1480509916595, 'messaging':
@@ -39,9 +54,18 @@ def writeLog(sender, text, time):
     'object': 'page'
 }
 '''
+
 '''
 if __name__ == "__main__":
     time = 1480832602535
     time = time/1000
     writeLog(123456789012345, "this is test", time)
+'''
+
+'''
+if __name__ == "__main__":
+    print ("****** UT Start ******")
+    # sender ß= "173247779792673"
+    sender = "12345"
+    print (decideMode(sender))
 '''
