@@ -24,8 +24,8 @@ define("port", default=5000, help="run on the given port", type=int)
 import json
 
 import send
+import hirowiki
 import quiz
-import dataGenerator as dg
 import logDAO
 
 verify_token = os.environ.get("VERIFY_TOKEN")
@@ -83,8 +83,10 @@ class WebHookHandler(tornado.web.RequestHandler):
             mode = logDAO.decideMode
             if mode == "quiz":
                 quiz.quizHandler(data)
-            else :
-                send.sendTextMessage(sender, text)
+            elif mode == "init":
+                hirowiki.initHandler(data)
+            else : #wiki
+                hirowiki.wikiHandler(data)
 
 # res CSV
 class CSVHandler(tornado.web.RequestHandler):

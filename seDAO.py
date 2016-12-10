@@ -22,6 +22,12 @@ def returnNote(word):
     return note
 
 '''
+def 
+
+'''
+
+
+'''
 if __name__ == "__main__":
     print (returnNote("neo4j"))
 '''

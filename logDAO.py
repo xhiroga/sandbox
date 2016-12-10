@@ -45,6 +45,15 @@ def decideMode(sender):
     return result[0]
 
 '''
+def getQuizBoard(sender):
+    conn = geneConn():
+    cur = conn.cursor()
+    cur.execute("select quizid from QuizStat where senderid = %s;", [sender])
+    result = cur.fetchone()
+    return result
+    #create table QuizBoard (id serial PRIMARY KEY, senderID varchar NOT NULL, いつから);
+    #
+
 def getLastQuiz(sender):
     conn = geneConn()
     cur = conn.cursor()
@@ -52,6 +61,12 @@ def getLastQuiz(sender):
     result = cur.fetchone()
     try
     raise StatNotExistError()
+    return result
+
+def setEvalation(quizid, sender, yourAns, point, ansDate):
+    conn= geneConn()
+    cur = conn.cursor
+    cur.execute("insert into QuizRecords (quizid, sender, yourAns, point, ansDate) values (%s, %s, %s, %s, %s);", (quizid, sender, yourANs, point, ansDate))
 
 '''
 '''
