@@ -22,7 +22,17 @@ def returnNote(word):
     return note
 
 '''
-def 
+def getNameFromId(id):
+    #id has to be INT
+    driver = envDriver()
+    session = driver.session()
+    result = session.run("MATCH (sw:Software) WHERE sw.Name = '" + word + "' RETURN sw.Name, sw.Note")
+    note = "解説がヒットしませんでした。"
+    if result is not None:
+        for record in result:
+            print (record)
+        note = record["sw.Note"]
+    return note
 
 '''
 

@@ -37,11 +37,13 @@ def choiceQuestion():
     id = random.randint(1,300)
     return id
 
-    #
 # quizidをキーに、question, answer, optionをもらう
-def generateQuiz():
+def generateQuiz(id):
     # 将来的にはquizidをキーにしてcypher"クエリ"を取ってくるが、今回はquizidからname, answerはnoteでcypherをそのまま発行する。
+    seDAO.returnNote(id)
+    seDAO.returnNames() #リストでnameを3つ返させる
 
+# 初回リリースはID被りで良い
 
 # イントロダクション for 1分モード
     # 初期化を呼ぶ

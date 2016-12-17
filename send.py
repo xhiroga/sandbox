@@ -7,7 +7,6 @@ import requests
 すること
 要素を受け取り、jsonに詰め込んで送出する。
 text, image, option等の要素ごとのgeneratorと、dataをsendするものに分けられる。
-
 """
 
 token = os.environ.get("PAGE_ACCESS_TOKEN")
