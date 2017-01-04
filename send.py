@@ -23,18 +23,18 @@ def sendMessage(data): # to FacebookMessanger
 
 ### packaging data into json
 class DataGenerator():
-    def setBasicMessage(sender, reply):
+    def setBasicMessage(self,sender, text):
         data = {
             "recipient": {
                 "id":sender
             },
             "message":  {
-              "text":reply
+              "text":text
             }
         }
         return data
 
-    def setImage(sender, imgurl):
+    def setImage(self,sender, imgurl):
         data = {
             "recipient":{
                 "id":sender
@@ -50,5 +50,5 @@ class DataGenerator():
                 }
         return data
 
-    def setMenu():
+    def setMenu(self):
         return data
