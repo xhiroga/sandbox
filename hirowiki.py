@@ -17,7 +17,7 @@ def initHandler(data):
 def wikiHandler(text,time,sender):
     ### 初期値
     dg = send.DataGenerator()
-    data = dg.setBasicMessage(sender, text + "...よく分かりませんでした。ごめんなさい。")
+    data = dg.setBasicMessage(sender, text)
 
     if text == "menu":
         data = dg.setMenu(sender)
