@@ -70,6 +70,8 @@ class WebHookHandler(tornado.web.RequestHandler):
             if ("message" in event and "text" in event["message"]):
                 text = event["message"]["text"]
             logDAO.writeLog(sender, text, time)
+            if len(text) <= 0:
+                return
             # モード判定
             mode = logDAO.decideMode
             if mode == "quiz":

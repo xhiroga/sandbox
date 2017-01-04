@@ -13,8 +13,6 @@ token = os.environ.get("PAGE_ACCESS_TOKEN")
 
 # send message
 def sendMessage(data): # to FacebookMessanger
-    if len(text) <= 0:
-        return
     url = 'https://graph.facebook.com/v2.6/me/messages'
     headers = {'content-type': 'application/json'}
     params = {"access_token":token}
