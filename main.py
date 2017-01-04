@@ -77,7 +77,7 @@ class WebHookHandler(tornado.web.RequestHandler):
             elif mode == "init":
                 hirowiki.initHandler(data)
             else : #wiki
-                hirowiki.wikiHandler(data,sender)
+                hirowiki.wikiHandler(text,time,sender)
 
 # res CSV
 class CSVHandler(tornado.web.RequestHandler):
