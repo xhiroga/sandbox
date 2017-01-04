@@ -16,17 +16,17 @@ def initHandler(data):
 
 def wikiHandler(data):
     ### 初期値
-    data = send.setBasicMessage(sender, text + "...よく分かりませんでした。ごめんなさい。")
+    data = send.DataGenerator.setBasicMessage(sender, text + "...よく分かりませんでした。ごめんなさい。")
 
     if text == "menu":
-        data = send.setMenu(sender)
+        data = send.DataGenerator.setMenu(sender)
     elif text == "sender":
-        data = send.setBasicMessage(sender, sender)
+        data = send.DataGenerator.setBasicMessage(sender, sender)
     elif re.compile("竹書房|takeshobo|ポプテピピック|pptp|PPTP").match(text):
         data = setPPTP(sender)
     else : #neo4jに問い合わせ
         note = seDAO.returnNote(text)
-        data = setBasicMessage(sender, note)
+        data = send.DataGenerator.setBasicMessage(sender, note)
     send.sendMessage(data)
 
 ### B.
@@ -37,4 +37,4 @@ def setPPTP(sender):
     elif kibun == 2:  imgurl ="http://cdn2.natalie.mu/media/comic/1512/1205/extra/news_header_poptepipik-new001.jpg"
     elif kibun ==3: imgurl ="http://pbs.twimg.com/media/CVoPQ-1VAAA0btq.jpg"
     else: imgurl ="http://pbs.twimg.com/media/CVn6FG_UEAENuo3.jpg"
-    return send.setImage(sender,imgurl)
+    return send.DataGenerator.setImage(sender,imgurl)
