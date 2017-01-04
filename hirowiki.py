@@ -21,7 +21,7 @@ def wikiHandler(data):
     if text == "menu":
         data = send.setMenu(sender)
     elif text == "sender":
-        data = setBasicMessage(sender, sender)
+        data = send.setBasicMessage(sender, sender)
     elif re.compile("竹書房|takeshobo|ポプテピピック|pptp|PPTP").match(text):
         data = setPPTP(sender)
     else : #neo4jに問い合わせ
