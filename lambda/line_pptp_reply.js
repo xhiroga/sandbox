@@ -49,7 +49,7 @@ exports.handler = (event, context, callback) => {
                 "messages": [
                     {
                         "type": "text",
-                        "text": content.message.text
+                        "text": ka[Math.floor(Math.random() * ka.length)]
                     }
                 ]
             };
@@ -59,6 +59,18 @@ exports.handler = (event, context, callback) => {
         case "follow":
             console.log ("follow this user ->" + content.source.userId);
             set_friend(content.source.userId);
+            var sticker = Math.floor(Math.random () * 430) + 1;
+            let greeting = {
+                "replyToken":result.replyToken,
+                "messages": [
+                    {
+                        "type": "sticker",
+                        "packageId": "1",
+                        "stickerId": sticker
+                    }
+                ]
+            };
+            send(greeting, () => {callback();});
             break;
         case "unfollow":
             console.log ("unfollow this user ->" + content.source.userId);
@@ -136,3 +148,12 @@ function gen_item_params(userid){
     };
     return params;
 }
+
+var ka = [
+  "おこった？", "あ”あ”？", "あ”ァ”？","今日も1日がんばるぞい！","アンチ〜♪",
+  "信者〜♪","さてはアンチだなオメー", "ほう だんまりか", "きゅっ きゅっ", "もしもし",
+  "ポリスメン？", "バーカ！！！", "なんだ…？ テメェ…", "竹書房ゥァア”ーッ", "つっこむぞ つかまれッ！",
+  "あー そーゆーことね", "自己顕示欲〜", "いやよくみたらクソむかつく", "どこいきやがった…", "ファーイwww",
+
+  "https://youtu.be/BBgghnQF6E4"
+];
