@@ -20,6 +20,23 @@ def get_conn():
     return conn
 
 
+def get_users():
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """
+            SELECT
+                userid
+            FROM
+                step_count_config.user
+            WHERE
+                delete_timestamp <> '-infinity';
+        """
+    )
+    # 0件なら空リストが返る
+    return cur.fetchall()
+
+
 def get_repos(userid):
     conn = get_conn()
     cur = conn.cursor()
@@ -78,12 +95,13 @@ def get_addition_count(day, userid, repos):
 
 
 # day expects "YYYY-MM-DD"
-def main(day, userid):
-    repos = get_repos(userid)
-    total_count = get_addition_count(day, userid, repos)
-    insert_total_count(day, userid, total_count)
+def main(day):
+    for userid in get_users():
+        repos = get_repos(userid)
+        total_count = get_addition_count(day, userid, repos)
+        insert_total_count(day, userid, total_count)
     print("OK")
 
 
 # userid, date
-main("2017-12-27", "hiroga-cc")
+main("2017-12-27")
