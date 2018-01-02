@@ -31,7 +31,7 @@ def get_users():
             FROM
                 step_count_config.user
             WHERE
-                delete_timestamp <> '-infinity';
+                delete_timestamp = 'infinity';
         """
     )
     # 0件なら空リストが返る
@@ -49,7 +49,7 @@ def get_repos(userid):
             FROM
                 step_count_config.watch_repositories
             WHERE
-                delete_timestamp <> '-infinity';
+                delete_timestamp = 'infinity';
         """
     )
     # 0件なら空リストが返る
@@ -96,7 +96,7 @@ def get_addition_count(day, userid, repos):
 
 
 # day expects "YYYY-MM-DD"
-def main(day):
+def add_step_count(day):
     for userid in get_users():
         repos = get_repos(userid)
         total_count = get_addition_count(day, userid, repos)
@@ -104,4 +104,4 @@ def main(day):
     print("OK")
 
 
-main(dt.strftime(date.today(), '%Y-%m-%d'))
+add_step_count(dt.strftime(date.today(), '%Y-%m-%d'))
