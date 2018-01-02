@@ -71,7 +71,7 @@ def get_addition_count(day, userid, repos):
 
         for cmt in commits:
             cmt_datetime = pytz.timezone('UTC').localize(dt.strptime(cmt["commit"]["author"]["date"], ISO8601))
-            if dt_utc <= cmt_datetime and cmt_datetime <= dt_utc + timedelta(days=1):
+            if dt_utc <= cmt_datetime and cmt_datetime <= dt_utc + timedelta(days=1) and cmt["author"]["login"] == userid:
                 commit = requests.get(SINGLE_COMMIT_API.format(rp[0],rp[1],cmt["sha"])).json()
                 total_count += commit["stats"]["additions"]
     return total_count
