@@ -2,6 +2,7 @@ import os
 import psycopg2
 import urllib.parse
 import requests
+from datetime import date
 from datetime import datetime as dt
 from datetime import timedelta
 import pytz
@@ -103,5 +104,4 @@ def main(day):
     print("OK")
 
 
-# userid, date
-main("2017-12-27")
+main(dt.strftime(date.today(), '%Y-%m-%d'))
