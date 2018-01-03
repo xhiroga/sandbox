@@ -1,5 +1,4 @@
 import requests
-from datetime import date
 from datetime import datetime as dt
 from datetime import timedelta
 import pytz
