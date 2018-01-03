@@ -1,9 +1,12 @@
-pyenv exec pip install psycopg2 -t .
-pyenv exec pip install pytz -t .
-pyenv exec pip install requests -t .
-# 本当はpyenvの参照元から直接取りたいのだが、-jと-rのオプションの併用がよくわからない
-
 rm -rf __pycache__
 # zipで-rコマンドと-xコマンドの併用のしかたがよくわからない為の措置
 
 zip -r ../target/lambda.zip * -x packaging
+
+mkdir ../tmp
+pyenv exec pip install pytz -t ../tmp/
+pyenv exec pip install requests -t ../tmp/
+# 本当はpyenvの参照元から直接取りたいのだが、-jと-rのオプションの併用がよくわからない
+
+cd ../tmp
+zip -r ../target/lambda.zip *

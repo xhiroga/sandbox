@@ -6,7 +6,7 @@ import add_step_count as add
 import postgres as pg
 
 
-def lambda_handler():
+def lambda_handler(event, context):
     day = dt.strftime(date.today(), '%Y-%m-%d')
     for userid in pg.get_users():
         repos = pg.get_repos(userid)
@@ -16,4 +16,4 @@ def lambda_handler():
 
 
 if __name__ == "__main__":
-    lambda_handler()
+    lambda_handler(None, None)
