@@ -1,12 +1,12 @@
-rm -rf __pycache__
+rm -rf src/__pycache__
 # zipで-rコマンドと-xコマンドの併用のしかたがよくわからない為の措置
 
-zip -r ../target/lambda.zip * -x packaging
+zip -j target/lambda.zip src/*
 
-mkdir ../tmp
-pyenv exec pip install pytz -t ../tmp/
-pyenv exec pip install requests -t ../tmp/
+mkdir tmp
+pyenv exec pip install pytz -t tmp/
+pyenv exec pip install requests -t tmp/
 # 本当はpyenvの参照元から直接取りたいのだが、-jと-rのオプションの併用がよくわからない
 
-cd ../tmp
+cd tmp
 zip -r ../target/lambda.zip *
