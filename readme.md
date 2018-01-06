@@ -6,14 +6,14 @@ Attention: Time standard is GMT.
 
 # How to use
 Clone this repository and run code by Python3.  
-Pythonの3系で実行してください。  
+Python3で実行してください。  
 
 
 # bitbank
 https://docs.bitbank.cc/#!/Candlestick/candlestick
 
-The expression of currency pair is like btc_jpy
-通貨ペアの表記は btc_jpy など
+The expression of currency pair is like btc_jpy  
+通貨ペアの表記は btc_jpy など  
 
 
 # Kraken
