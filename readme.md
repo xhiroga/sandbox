@@ -1,12 +1,20 @@
 # Get the price of CryptoCurrency
 
 Attention: Time standard is GMT.  
-注意: 海外取引所の場合、始値・終値の基準がGMTである。  
+注意: 始値・終値の基準は全てGMTです。
 
 
 # How to use
 Clone this repository and run code by Python3.  
 Pythonの3系で実行してください。  
+
+
+# bitbank
+https://docs.bitbank.cc/#!/Candlestick/candlestick
+
+The expression of currency pair is like btc_jpy
+通貨ペアの表記は btc_jpy など
+
 
 # Kraken
 https://www.kraken.com/en-us/help/api  
