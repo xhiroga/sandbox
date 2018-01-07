@@ -4,22 +4,41 @@ from datetime import timedelta
 import add_step_count as add
 import postgres as pg
 import pandas as pd
+import logging
 
 
 def range_handler(start, end):
 
+    mylog = logging.getLogger("mylog")
+    mylog.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(fmt)
+    mylog.addHandler(ch)
+
     for userid in pg.get_users():
+        userid = userid[0]
+        # userid type = tuple, レコードの一行の列が格納されている建前のため
+        mylog.debug("userid:" + str(userid))
+
         for t in pd.date_range(start, end):
+            mylog.debug("date:" + t.strftime("%Y-%m-%d"))
+
             day = t.strftime("%Y-%m-%d")
             repos = pg.get_repos(userid)
+            mylog.debug(repos)
+
             total_count = add.get_addition_count(day, userid, repos)
+            mylog.debug("total_count: " + str(total_count))
+
             pg.insert_total_count(day, userid, total_count)
-    print("OK")
+    mylog.info("OK")
 
 
 # 手動メンテナンス用
 if __name__ == "__main__":
-    # 本当は"2017-01-01"みたいにゼロ埋めしてもいいのだが、タイプ数が面倒
+    # "2017-01-01"みたいにゼロ埋めしても支障ないが、タイプが面倒
     print("開始日付を入力してください. ex) 2017-1-1")
     start = input()
     print("終了日付を入力してください. ex) 2017-1-7")
