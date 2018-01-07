@@ -1,4 +1,6 @@
-# Get the price of CryptoCurrency
+# Get the price history of CryptoCurrency
+
+The scripts that acqiure Charting candle info by day
 
 Attention: Time standard is GMT.  
 注意: 始値・終値の基準は全てGMTです。
@@ -14,6 +16,14 @@ https://docs.bitbank.cc/#!/Candlestick/candlestick
 
 The expression of currency pair is like btc_jpy  
 通貨ペアの表記は btc_jpy など  
+
+Count is limited to 1000
+取得件数は直近1000件に絞っています。
+
+# BITFINEX
+https://docs.bitfinex.com/v2/reference#rest-public-stats  
+
+
 
 
 # Kraken
