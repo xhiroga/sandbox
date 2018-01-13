@@ -65,3 +65,17 @@ def insert_total_count(day, userid, total_count):
     )
     conn.commit()
     conn.close()
+
+
+def upsert_moodnotes(args_list):
+    conn = get_conn()
+    cur = conn.cursor()
+    args_str = ','.join(cur.mogrify("(%s,%s,%s,%s,%s)", tpl).decode('utf-8') for tpl in args_list)
+    cur.execute("""
+                INSERT INTO public.moodnotes(
+                    id, mood_value, incident, page_created, page_updated)
+                VALUES
+                """ + args_str + " ON CONFLICT (id ,page_created) DO NOTHING")
+                # 本来は ON CONFLITでUPDATEした方がいいのだが、そこまで考えて設計してなかった(*´∀｀*)
+    conn.commit()
+    conn.close()

@@ -20,7 +20,7 @@ def range_handler(start, end):
     for userid in pg.get_users():
         userid = userid[0]
         # userid type = tuple, レコードの一行の列が格納されている建前のため
-        mylog.debug("userid:" + str(userid))
+        mylog.debug("userid:" + userid)
 
         for t in pd.date_range(start, end):
             mylog.debug("date:" + t.strftime("%Y-%m-%d"))
