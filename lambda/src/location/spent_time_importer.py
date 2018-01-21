@@ -13,7 +13,6 @@ def lambda_handler(event, context):
     yesterday = dt.strftime(date.today() - timedelta(days=1), '%Y-%m-%d')
     # 自分しか使わないのでuseridは決め打ちにしておく.
     # for userid in pg.get_users():
-    #     repos = pg.get_repos(userid)
     #     spent_time_importer.import_spent_time(yesterday, userid)
     spent_time_importer.import_spent_time(yesterday, 1)
     print("OK")
@@ -34,17 +33,21 @@ def import_spent_time(day, userid):
     df = pd.DataFrame({"EnteredOrExited":record["fields"]["EnteredOrExited"], "ParsedDate":dt.strptime(record["fields"]["ParsedDate"],'%Y-%m-%dT%H:%M:%S.%fZ')} for record in res["records"])
     df = df.sort_values(by="ParsedDate").reset_index(drop=True)
 
-    entered_time = dt.combine(date.today(), dt.min.time())
+    is_enter = True
+    day_date = dt.strptime(day, "%Y-%m-%d")
+    stride_time = day_date
     spent_time = td()
 
     for index, row in df.iterrows():
-        if row["EnteredOrExited"] == "entered":
-            entered_time = row["ParsedDate"]
-        else:
-            spent_time += row["ParsedDate"] - entered_time
-            entered_time = None
-    if entered_time != None:
-        spent_time += dt.combine(date.today(), dt.max.time()) - entered_time
+        if row["EnteredOrExited"] == "exited":
+            is_enter = True
+        if row["EnteredOrExited"] == "exited":
+            is_enter = False
+            spent_time += row["ParsedDate"] - stride_time
+        stride_time = row["ParsedDate"]
+
+    if is_enter:
+        spent_time += day_date + timedelta(days=1) - stride_time
 
     pg.upsert_spent_time(userid, location, day, str(spent_time))
 
