@@ -17,12 +17,15 @@ def main(id):
     ch.setFormatter(fmt)
     mylog.addHandler(ch)
 
+    tz = "+0900"
+    # 本来はidから取得すべき
+
     # tupelのリストを渡すまでがこのクラスの役割. multi-row insertはoDB依存処理.
     df = pd.read_csv("../../wrk/MoodnotesReport.csv")
     df = df[pd.notnull(df["Updated"])]
-    args_list = [(id, row[3], row[5], dt.strptime(row[1], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M:%S'),
-                  dt.strptime(row[2], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M:%S')) for row in df.values]
-    # ex) [('1', 4.0, '今日は晴れだった', '2018-01-11 18:54:00', '2018-01-11 18:57:00'), (...), ...]
+    args_list = [(id, row[3], row[5], dt.strptime(row[1], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M:%S') + tz,
+                  dt.strptime(row[2], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M:%S') + tz) for row in df.values]
+    # ex) [('1', 4.0, '今日は晴れだった', '2018-01-11 18:54:00+0900', '2018-01-11 18:57:00+0900'), (...), ...]
 
     pg.upsert_moodnotes(args_list)
     mylog.info("OK")

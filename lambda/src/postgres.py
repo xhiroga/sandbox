@@ -79,3 +79,17 @@ def upsert_moodnotes(args_list):
                 # 本来は ON CONFLITでUPDATEした方がいいのだが、そこまで考えて設計してなかった(*´∀｀*)
     conn.commit()
     conn.close()
+
+def upsert_spent_time(id, location, date, spent_time):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """
+            INSERT INTO public.spent_time(
+            id, location, date, spent_time)
+            VALUES ((%s), (%s), (%s), (%s))
+            ON CONFLICT (id, location, date) DO UPDATE SET spent_time = (%s);
+        """, (id, location, date, spent_time, spent_time)
+    )
+    conn.commit()
+    conn.close()
