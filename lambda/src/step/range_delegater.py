@@ -1,10 +1,12 @@
 from datetime import date
 from datetime import datetime as dt
 from datetime import timedelta
-import add_step_count as add
-import postgres as pg
-import pandas as pd
 import logging
+import sys
+import pandas as pd
+sys.path.insert(0, "../common/")
+import postgres as pg
+import add_step_count as add
 
 
 def range_handler(start, end):
@@ -32,7 +34,7 @@ def range_handler(start, end):
             total_count = add.get_addition_count(day, userid, repos)
             mylog.debug("total_count: " + str(total_count))
 
-            pg.insert_total_count(day, userid, total_count)
+            pg.upsert_total_count(day, userid, total_count)
     mylog.info("OK")
 
 

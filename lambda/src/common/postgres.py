@@ -51,7 +51,7 @@ def get_repos(userid):
     return cur.fetchall()
 
 
-def insert_total_count(day, userid, total_count):
+def upsert_total_count(day, userid, total_count):
     conn = get_conn()
     cur = conn.cursor()
     cur.execute(
@@ -60,7 +60,7 @@ def insert_total_count(day, userid, total_count):
                 create_timestamp, update_timestamp, delete_timestamp,
                 user_id, date, count)
             VALUES ('NOW', 'NOW', 'INFINITY', (%s), (%s), (%s))
-            ON CONFLICT (user_id, date) DO UPDATE SET count = (%s);
+            ON CONFLICT (user_id, date) DO UPDATE SET update_timestamp = 'NOW', count = (%s);
         """, (userid, day, total_count, total_count)
     )
     conn.commit()
@@ -88,7 +88,7 @@ def upsert_spent_time(id, location, date, spent_time):
             INSERT INTO public.spent_time(
             id, location, date, spent_time)
             VALUES ((%s), (%s), (%s), (%s))
-            ON CONFLICT (id, location, date) DO UPDATE SET spent_time = (%s);
+            ON CONFLICT (id, location, date) DO UPDATE SET update_timestamp = 'NOW', spent_time = (%s);
         """, (id, location, date, spent_time, spent_time)
     )
     conn.commit()

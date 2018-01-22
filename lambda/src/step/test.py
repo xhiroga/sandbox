@@ -1,13 +1,15 @@
 from datetime import date
 from datetime import datetime as dt
-import add_step_count as add
+import sys
+sys.path.insert(0, "../common/")
 import postgres as pg
+import add_step_count as add
 
 
 def test_handler(day, userid):
     repos = pg.get_repos(userid)
     total_count = add.get_addition_count(day, userid, repos)
-    pg.insert_total_count(day, userid, total_count)
+    pg.upsert_total_count(day, userid, total_count)
     print("OK")
 
 
@@ -17,4 +19,3 @@ if __name__ == "__main__":
     print("GitHubのユーザーIDを入力して下さい.")
     userid=input()
     test_handler(day, userid)
-

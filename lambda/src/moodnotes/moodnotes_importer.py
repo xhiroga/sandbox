@@ -2,7 +2,7 @@ import sys
 from datetime import datetime as dt
 import logging
 import pandas as pd
-sys.path.insert(0, "../")
+sys.path.insert(0, "../common/")
 import postgres as pg
 
 

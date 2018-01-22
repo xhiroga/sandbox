@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     for userid in pg.get_users():
         repos = pg.get_repos(userid)
         total_count = add.get_addition_count(yesterday, userid, repos)
-        pg.insert_total_count(yesterday, userid, total_count)
+        pg.upsert_total_count(yesterday, userid, total_count)
     print("OK")
 
 
