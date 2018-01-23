@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import requests
 import sys
@@ -54,7 +56,7 @@ def import_spent_time(userid, location, day):
 
 # 手動メンテナンス用
 if __name__ == "__main__":
-    print("開始日付を入力してください. ex) 2018-01-01")
+    print("対象の日付を入力してください. ex) 2018-01-01")
     day = input()
     for location in ("Home", "Work"):
         # useridは決め打ち
