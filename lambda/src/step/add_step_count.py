@@ -5,10 +5,11 @@ import logging
 import pytz
 
 
-def get_addition_count(day, userid, repos):
+# day: awareなDateTime型(utc)とする。
+def get_addition_count(day_time_utc, userid, repos):
     mylog = logging.getLogger("mylog")
-    mylog.debug("userid")
-    mylog.debug(userid)
+    mylog.debug("Period Beginning: " + str(day_time_utc))
+    mylog.debug("userid: " + userid)
 
     ISO8601 = '%Y-%m-%dT%H:%M:%SZ'
     LIST_COMMITS_API = "https://api.github.com/repos/{0}/{1}/commits?since='{2}'"
@@ -16,26 +17,20 @@ def get_addition_count(day, userid, repos):
 
     total_count = 0
 
-    t = dt.strptime(day, '%Y-%m-%d')
-    dt_jst = pytz.timezone("Asia/Tokyo").localize(t)
-    dt_utc = dt_jst.astimezone(pytz.utc)
-    mylog.debug("dt_utc:" + str(dt_utc))
-    mylog.debug("dt_utc + timedelta(days=1):" + str(dt_utc + timedelta(days=1)))
-
     for rp in repos:
-        mylog.debug("repository:" + str(rp))
-        commits = requests.get(LIST_COMMITS_API.format(rp[0], rp[1], dt.strftime(dt_utc, ISO8601))).json()
+        mylog.debug("repository: " + str(rp))
+        commits = requests.get(LIST_COMMITS_API.format(rp[0], rp[1], dt.strftime(day_time_utc, ISO8601))).json()
         # パラメータを複数指定することで対象commitを絞り込むこともできるのだが、そうするとresponseがなんか変になる...
         if "message" in commits: raise Exception(commits["message"])
         # APIのアクセス回数制限等の対策
 
         for cmt in commits:
-            mylog.debug("commit:" + str(cmt["sha"]))
             if "message" in cmt: raise Exception(cmt["message"])
+            mylog.debug("commit :" + str(cmt["sha"]))
+            mylog.debug("commit author loginuser :" + str(cmt["author"]["login"]))
             cmt_datetime = pytz.timezone('UTC').localize(dt.strptime(cmt["commit"]["author"]["date"], ISO8601))
-            mylog.debug("commit datetime:" + str(cmt_datetime))
-            mylog.debug("commit author loginuser:" + str(cmt["author"]["login"]))
-            if dt_utc <= cmt_datetime and cmt_datetime <= dt_utc + timedelta(days=1) and cmt["author"]["login"] == userid:
+            mylog.debug("commit datetime: " + str(cmt_datetime))
+            if day_time_utc <= cmt_datetime and cmt_datetime <= day_time_utc + timedelta(days=1) and cmt["author"]["login"] == userid:
                 commit = requests.get(SINGLE_COMMIT_API.format(rp[0],rp[1],cmt["sha"])).json()
                 mylog.debug("count in this commit: " + str(commit["stats"]["additions"]))
 

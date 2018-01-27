@@ -7,6 +7,7 @@ import logging
 import sys
 sys.path.insert(0, "../common/")
 import postgres as pg
+import pytz
 import add_step_count as add
 
 
@@ -20,13 +21,14 @@ def lambda_handler(event, context):
     ch.setFormatter(fmt)
     mylog.addHandler(ch)
 
-    yesterday = dt.strftime(date.today() + timedelta(hours=9) - timedelta(days=1), '%Y-%m-%d')
-    mylog.debug("yesterday: " + str(yesterday))
+    period_beginnig = dt.now(pytz.utc) - timedelta(days=1)
+    mylog.debug("Period Beginning: " + str(period_beginnig))
     for userid in pg.get_users():
+        userid = userid[0]
         repos = pg.get_repos(userid)
-        total_count = add.get_addition_count(yesterday, userid, repos)
+        total_count = add.get_addition_count(period_beginnig, userid, repos)
         mylog.debug("total_count: " + str(total_count))
-        pg.upsert_total_count(yesterday, userid, total_count)
+        pg.upsert_total_count(dt.strftime(period_beginnig.astimezone(pytz.timezone("Asia/Tokyo")), '%Y-%m-%d'), userid, total_count)
     print("OK")
 
 

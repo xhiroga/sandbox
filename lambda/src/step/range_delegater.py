@@ -3,9 +3,10 @@ from datetime import datetime as dt
 from datetime import timedelta
 import logging
 import sys
-import pandas as pd
 sys.path.insert(0, "../common/")
+import pandas as pd
 import postgres as pg
+import pytz
 import add_step_count as add
 
 
@@ -24,25 +25,24 @@ def range_handler(start, end):
         # userid type = tuple, レコードの一行の列が格納されている建前のため
         mylog.debug("userid:" + userid)
 
-        for t in pd.date_range(start, end):
-            mylog.debug("date:" + t.strftime("%Y-%m-%d"))
+        for day in pd.date_range(start, end):
+            mylog.debug("day: " + day.strftime("%Y-%m-%d"))
 
-            day = t.strftime("%Y-%m-%d")
             repos = pg.get_repos(userid)
             mylog.debug(repos)
 
-            total_count = add.get_addition_count(day, userid, repos)
+            total_count = add.get_addition_count(pytz.timezone('Asia/Tokyo').localize(day).astimezone(pytz.utc), userid, repos)
             mylog.debug("total_count: " + str(total_count))
 
-            pg.upsert_total_count(day, userid, total_count)
+            pg.upsert_total_count(day.strftime("%Y-%m-%d"), userid, total_count)
     mylog.info("OK")
 
 
 # 手動メンテナンス用
 if __name__ == "__main__":
     # "2017-01-01"みたいにゼロ埋めしても支障ないが、タイプが面倒
-    print("開始日付を入力してください. ex) 2017-1-1")
+    print("開始日付を入力してください. ex) 2018-1-1")
     start = input()
-    print("終了日付を入力してください. ex) 2017-1-7")
+    print("終了日付を入力してください. ex) 2018-1-7")
     end = input()
     range_handler(start, end)
