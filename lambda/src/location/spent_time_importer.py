@@ -6,9 +6,10 @@ import sys
 from datetime import date
 from datetime import datetime as dt
 from datetime import timedelta as td
-import pandas as pd
 sys.path.insert(0, "../common/")
+import pandas as pd
 import postgres as pg
+import pytz
 
 
 def lambda_handler(event, context):
@@ -52,6 +53,7 @@ def import_spent_time(userid, location, day):
     if is_enter:
         spent_time += day_date + td(days=1) - stride_time
 
+    print("spent_time: " + str(spent_time))
     pg.upsert_spent_time(userid, location, day, str(spent_time))
 
 
