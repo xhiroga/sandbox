@@ -12,8 +12,9 @@ import postgres as pg
 
 
 def lambda_handler(event, context):
-    yesterday = dt.strftime(date.today() - td(days=1), '%Y-%m-%d')
     # 自分しか使わないのでuseridは決め打ち.
+    # 本当はyesterdayもuserの居住地域に合わせた方がいいんだけど、そんなことしない.
+    yesterday = dt.strftime((dt.now(pytz.utc) - td(days=1)).astimezone(pytz.timezone("Asia/Tokyo")), '%Y-%m-%d')
     for location in ("Home", "Work"):
         import_spent_time(1, location, yesterday)
     print("OK")
