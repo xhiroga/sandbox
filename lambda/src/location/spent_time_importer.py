@@ -31,8 +31,15 @@ def import_spent_time(userid, location, day):
     res = requests.get(URL.format(app_id, location, key, day)).json()
     print(location)
     print(res)
-    if res["records"] == []:
-        return
+    spent_time = td()
+    if res["records"] != []:
+        spent_time = measure_spent_time(res, day)
+
+    print("spent_time: " + str(spent_time))
+    pg.upsert_spent_time(userid, location, day, str(spent_time))
+
+
+def measure_spent_time(res, day):
     df = pd.DataFrame({"EnteredOrExited":record["fields"]["EnteredOrExited"], "ParsedDate":dt.strptime(record["fields"]["ParsedDate"],'%Y-%m-%dT%H:%M:%S.%fZ')} for record in res["records"])
     df = df.sort_values(by="ParsedDate").reset_index(drop=True)
     print(df)
@@ -53,8 +60,7 @@ def import_spent_time(userid, location, day):
     if is_enter:
         spent_time += day_date + td(days=1) - stride_time
 
-    print("spent_time: " + str(spent_time))
-    pg.upsert_spent_time(userid, location, day, str(spent_time))
+    return spent_time
 
 
 # 手動メンテナンス用
