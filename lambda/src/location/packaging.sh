@@ -8,6 +8,7 @@ mkdir ../../tmp/location
 cd ../../tmp/location
 cp -r ../../wrk/psycopg2 .
 cp -r ../../wrk/pandas/* .
+pyenv exec pip install pytz -t .
 pyenv exec pip install requests -t .
 # 本当はpyenvの参照元から直接取りたいのだが、-jと-rのオプションの併用がよくわからない
 

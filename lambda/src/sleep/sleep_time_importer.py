@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime as dt
+from datetime import timedelta as td
 import logging
 import os
 import requests
@@ -27,7 +28,7 @@ def lambda_handler(event, context):
     mylog.info("OK")
 
 
-def import_sleep_time(user_id, day):
+def import_sleep_time(id, day):
     global mylog
     URL = "https://api.airtable.com/v0/{0}/Log?api_key={1}&filterByFormula=(DATESTR({{ParsedDate}})='{2}')"
     # {0}:App ID, {1}:Table Name(ex. Home/Work/etc...), {2}:API_KEY, {3}:Day(ex. 2018-01-21)
@@ -45,7 +46,7 @@ def import_sleep_time(user_id, day):
     mylog.debug("sum_time_slept: " + str(sum_time_slept))
     mylog.debug("sum_time_ofrestfully_slept: " + str(sum_time_ofrestfully_slept))
 
-    pg.upsert_sleep_time(user_id, day, str(sum_time_slept), str(sum_time_ofrestfully_slept))
+    pg.upsert_sleep_time(id, day, str(sum_time_slept), str(sum_time_ofrestfully_slept))
 
 
 def measure_sleep_time(res):
