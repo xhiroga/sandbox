@@ -9,7 +9,7 @@ const URLS = [
   "https://protopedia.net/prototype"
 ];
 
-const search_projects = function(key) {
+const search_projects = function() {
   const head = "https://www.google.com/search";
 
   const keywords = $("#keywords")
