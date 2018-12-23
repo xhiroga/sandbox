@@ -1,12 +1,19 @@
 "use strict";
 
 const URLS = [
+  "https://hackaday.io/project",
   "https://www.hackster.io/projects",
+  "https://www.hackreactor.com/student-projects/",
+  "http://www.hackathon.io/projects",
   "https://hackdash.org/projects",
   "https://devpost.com/software",
+  "https://www.ideasvoice.com/en/pub/project/",
+  "https://www.programmableweb.com/mashup/",
+  "https://hackerspace.govhack.org/projects",
+  "https://makezine.com/projects/",
   "spaceappschallenge.org/project",
-  "http://www.hackathon.io/projects",
-  "https://protopedia.net/prototype"
+  "https://protopedia.net/prototype",
+  "https://opendata.cityofnewyork.us/projects"
 ];
 
 const search_projects = function() {
