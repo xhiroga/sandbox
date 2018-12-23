@@ -3,7 +3,10 @@
 const URLS = [
   "https://www.hackster.io/projects",
   "https://hackdash.org/projects",
-  "https://devpost.com/software"
+  "https://devpost.com/software",
+  "spaceappschallenge.org/project",
+  "http://www.hackathon.io/projects",
+  "https://protopedia.net/prototype"
 ];
 
 const search_projects = function(key) {
