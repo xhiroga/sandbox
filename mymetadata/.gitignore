@@ -1,0 +1,8 @@
+# temporary fiels and directories for building
+__pycache__
+target/
+tmp
+wrk
+
+# ignore files and directories
+secret
