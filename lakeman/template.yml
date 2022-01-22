@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description:  >
+  Commands:
+    - aws cloudformation validate-template --template-body file://template.yml
+Parameters:
+  Env:
+    Type: String
+    Default: dev
+Globals: # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#globals-section
+  Function:
+    Runtime: python3.6
+    Timeout: 60
+    Environment:
+      Variables:
+        PYTHONPATH: /var/runtime:/var/task/vendor
+Resources:
+  DataLakeBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub ${Env}-data-lake-bucket
+  PostDataLake:
+    Type: AWS::Serverless::Function
+    Name: !Sub ${Env}-PostDataLake
+    Properties:
+      Handler: app.handler
+      Runtime: python3.7
+      Role: !GetAtt FunctionIamRole.Arn
+      CodeUri: ./src
+      Environment:
+        Variables:
+          S3_BUCKET: !Sub ${Env}-data-lake-bucket
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /data
+            Method: POST
+  FunctionIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "data_lake"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: 
+                - "cloudwatch:*"
+                - "ssm:*"
+                Resource: "*"
