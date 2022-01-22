@@ -321,7 +321,7 @@ for(turn=0;turn<10;turn++){
 		printf("ＣＰＵ｛やはりこの程度か・・・出直してくるんだな\n");
 		printf("Ｙｏｕ　Ｌｏｓｅ・・・\n");
 	}
-	else if(cpupoint=mypoint){
+	else if(cpupoint==mypoint){
 		printf("ＣＰＵ｛意外に健闘したじゃないか\n");
 		printf("Ｄｒａｗ　Ｇａｍｅ\n");
 	}
